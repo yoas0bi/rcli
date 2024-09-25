@@ -1,6 +1,6 @@
 use anyhow::Ok;
 use clap::Parser;
-use rcli::{process_csv, process_genpass, Opts, SubCommand};
+use rcli::{process_csv, process_decode, process_encode, process_genpass, Opts, SubCommand};
 // rcli csv -i input.csv -o output.json --header -d ','
 
 fn main() -> anyhow::Result<()> {
@@ -25,5 +25,15 @@ fn main() -> anyhow::Result<()> {
             )?;
             Ok(())
         }
+        SubCommand::Base64(base64_sub_command) => match base64_sub_command {
+            rcli::Base64SubCommand::Encode(opts) => {
+                process_encode(&opts.input, opts.format)?;
+                Ok(())
+            }
+            rcli::Base64SubCommand::Decode(opts) => {
+                process_decode(&opts.input, opts.format)?;
+                Ok(())
+            }
+        },
     }
 }
